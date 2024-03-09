@@ -37,6 +37,16 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
     );
 }
 
+function NotLoggedInPage() {
+    const navigate = useNavigate();
+    return (
+        <div>
+            Please log in to view this page.
+            <button onClick={() => navigate("/")}>Log In</button>
+        </div>
+    );
+}
+
 function App() {
     const [data, setData] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -64,7 +74,7 @@ function App() {
         <Router>
             <Routes>
                 <Route path="/" element={isLoggedIn ? <DataPage data={data} logout={logout} /> : <LoginPage setIsLoggedIn={setIsLoggedIn} fetchData={fetchData} />} />
-                <Route path="/data" element={isLoggedIn ? <DataPage data={data} logout={logout} /> : <div>Please log in to view this page.</div>} />
+                <Route path="/data" element={isLoggedIn ? <DataPage data={data} logout={logout} /> : <NotLoggedInPage />} />
             </Routes>
         </Router>
     );

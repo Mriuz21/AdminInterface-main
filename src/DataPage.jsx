@@ -1,26 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+
+
 
 function DataPage({ data, logout }) {
     const navigate = useNavigate();
+    const [position, setPosition] = useState(null); // Set initial position to null
+
+
+    useEffect(() => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            setPosition([position.coords.latitude, position.coords.longitude]);
+        });
+    }, []);
 
     const handleLogout = async () => {
         await logout();
         navigate('/');
     };
 
+    // If position is still null, don't render the map yet
+    if (!position) {
+        return <div>Loading...</div>;
+    }
+
     return (
         <div className="data-container">
-            <h2>Data from Firebase:</h2>
-            {data && Object.entries(data.issues).map(([id, issue]) => (
-                <div key={id}>
-                    <h3>Issue ID: {id}</h3>
-                    <p>Department: {issue.department}</p>
-                    <p>Encoded Email: {issue.encodedEmail}</p>
-                    <p>Altitude: {issue.location.altitude}</p>
-                </div>
-            ))}
-            <button onClick={handleLogout}>Logout</button>
+            <div className="map-section">
+                <MapContainer center={position} zoom={13} style={{ height: "90%", width: "100%" }}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {data && data.issues && Object.entries(data.issues).map(([id, issue]) => (
+                        <Marker key={id} position={[issue.location.latitude, issue.location.longitude]}>
+                            <Popup>
+                                {issue.description}
+                            </Popup>
+                        </Marker>
+                    ))}
+                </MapContainer>
+            </div>
+            <div className="button-section">
+                <button onClick={() => navigate('/issues')}>See Issues</button>
+                <button onClick={() => navigate('/report')}>Report Issue</button>
+                <button onClick={handleLogout}>Logout</button>
+            </div>
         </div>
     );
 }
