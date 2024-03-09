@@ -18,6 +18,15 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
             // Signed in
             const user = userCredential.user;
+
+            // Fetch role from Realtime Database
+            const snapshot = await get(ref(db, `user/${user.uid}/role`));
+            const role = snapshot.val();
+
+            // Log the user role
+            console.log(snapshot);
+            console.log(`User role: ${role}`);
+
             // Fetch data after successful login
             fetchData();
             setIsLoggedIn(true);
@@ -25,12 +34,16 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
         } catch (error) {
             const errorCode = error.code;
             const errorMessage = error.message;
+            console.log(`Error code: ${errorCode}`);
+            console.log(`Error message: ${errorMessage}`);
         }
     };
 
+
+
     return (
         <div>
-            <h1>Merge?</h1>
+            <h3>ConnecTM</h3>
             <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
             <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
             <button onClick={login}>Login</button>
@@ -81,6 +94,7 @@ function RegisterPage() {
 function App() {
     const [data, setData] = useState(null);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [userRole, setUserRole] = useState(null);
 
     const fetchData = async () => {
         try {
