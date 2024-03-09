@@ -2,12 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
-
-
 function DataPage({ data, logout }) {
     const navigate = useNavigate();
     const [position, setPosition] = useState(null); // Set initial position to null
-
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -33,7 +30,7 @@ function DataPage({ data, logout }) {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    {data && data.issues && Object.entries(data.issues).map(([id, issue]) => (
+                    {data && Object.entries(data).map(([id, issue]) => (
                         <Marker key={id} position={[issue.location.latitude, issue.location.longitude]}>
                             <Popup>
                                 {issue.description}

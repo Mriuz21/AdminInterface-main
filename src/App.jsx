@@ -5,6 +5,8 @@ import db from './firebaseConfig.jsx';
 import { ref, get } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import DataPage from './DataPage.jsx';
+import IssuesPage from "./IssuePage.jsx";
+import issuePage from "./IssuePage.jsx";
 
 function LoginPage({ setIsLoggedIn, fetchData }) {
     const [email, setEmail] = useState("");
@@ -54,11 +56,27 @@ function App() {
     const fetchData = async () => {
         try {
             const snapshot = await get(ref(db));
-            setData(snapshot.val());
+            const allData = snapshot.val();
+            const data = allData.issues;
+            setData(data);
+
+            console.log("I've read the database: ", allData);
+            console.log("NA BAAA: ", data);
+
+            if (data) {
+                for (const key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        console.log(`ID: ${key}, Department: ${data[key].department}`);
+                    }
+                }
+            }
         } catch (error) {
             console.error('Error fetching data:', error);
         }
     };
+
+
+
 
     const logout = async () => {
         const auth = getAuth();
@@ -75,6 +93,8 @@ function App() {
             <Routes>
                 <Route path="/" element={isLoggedIn ? <DataPage data={data} logout={logout} /> : <LoginPage setIsLoggedIn={setIsLoggedIn} fetchData={fetchData} />} />
                 <Route path="/data" element={isLoggedIn ? <DataPage data={data} logout={logout} /> : <NotLoggedInPage />} />
+                <Route path="/issues" element={isLoggedIn ? <IssuesPage data={data} logout={logout} /> : <NotLoggedInPage />} />
+
             </Routes>
         </Router>
     );
