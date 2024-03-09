@@ -1,7 +1,8 @@
+@import url('https://unpkg.com/leaflet/dist/leaflet.css');
+
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  /*max-width: 1280px;
+  margin: 0 auto;*/
   text-align: center;
 }
 
@@ -41,14 +42,34 @@
   color: #888;
 }
 
-/* Added styles for displaying fetched data */
 .data-container {
-  margin-top: 2rem;
-  padding: 1rem;
+  display: flex;
+  height: 100vh;
+  /*margin-top: 2rem;*/
+  /*padding: 1rem;*/
   background-color: #000000;
-  border-radius: 8px;
+  /*border-radius: 8px;*/
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
+
+.data-section, .map-section {
+  flex: 1; /* Make each section take up equal space within the flex container */
+  height: 100%; /* This will make each section take up the full height of the .data-container */
+  overflow: auto;
+}
+
+@media (max-width: 768px) {
+  /* Adjust the breakpoint as needed */
+  .data-container {
+    flex-direction: column; /* Stack the sections vertically on smaller screens */
+  }
+
+  .data-section, .map-section {
+    width: 100%; /* Make each section take up the full width on smaller screens */
+  }
+}
+
+
 
 .data-container h2 {
   font-size: 1.5rem;
@@ -60,3 +81,4 @@
   font-size: 1rem;
   white-space: pre-wrap;
 }
+
