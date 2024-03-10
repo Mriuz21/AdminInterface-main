@@ -3,19 +3,33 @@ import {json, useNavigate} from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { getDatabase, ref, get } from "firebase/database";
+import './DataPage.css'
 function ReturnamDiv(roletemp, navigate) {
     return (<div>
-        <h2>Hai sa vedem</h2>
+
         {roletemp === 'admin' && (
             <button onClick={() => {
                 navigate('/issues');
-            }}>See Issues</button>
+            }}>Vezi Sesizari</button>
         )}
-        <button onClick={() => navigate('/report')}>Report Issue</button>
+        <button className="report-button" onClick={() => navigate('/report')}>Fa Sesizare!</button>
 
 
     </div>)
 }
+function IssueCard({ issue }) {
+    return (
+        <div className="issue-card">
+            <h3>{issue.title}</h3>
+            <p>{issue.description}</p>
+            <p>Status: {issue.status}</p>
+            <img src={issue.image} alt="Issue" style={{ width: '100px', height: '100px' }} />
+            <p>Department: {issue.department}</p>
+            <p>Request Time: {issue.requestTime}</p>
+        </div>
+    );
+}
+
 
 function DataPage({ data, logout, showMarkers = true }) {
     const navigate = useNavigate();
@@ -109,10 +123,11 @@ function DataPage({ data, logout, showMarkers = true }) {
                 <button onClick={handleLogout}>Logout</button>
             </div>*/}<div className="button-section">
             {ReturnamDiv(role, navigate)}
-            <button className="button-section" onClick={handleLogout}>Logout</button>
+            <button className="logout-button" onClick={handleLogout}>Logout</button>
         </div>
         </div>
     );
 }
+
 
 export default DataPage;

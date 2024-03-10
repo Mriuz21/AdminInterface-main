@@ -12,6 +12,7 @@
     overflow: hidden;
 }
 
+
 .button-section {
     padding: 40px 80px 80px 80px; /* Adjusted padding: top, right, bottom, left */
     display: flex;
@@ -20,6 +21,7 @@
     align-items: center;
     gap: 20px; /* Space between buttons */
     background: white;
+
 }
 
 
@@ -38,4 +40,44 @@
 
 .button-section button:hover {
     background-color: #800080; /* Darker purple on hover */
+}
+
+.logout-button,
+.report-button {
+    background-color: purple; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    padding: 15px 30px; /* Increased padding to make buttons bigger */
+    font-size: 20px; /* Increased font size to make buttons bigger */
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    line-height: 1.5; /* Adjusted line-height */
+}
+
+.logout-button:hover,
+.report-button:hover {
+    background-color: #800080; /* Darker purple on hover */
+}
+
+.issue-card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: 300px;
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+}
+
+
+.issues-container {
+     display: flex;
+     flex-wrap: wrap;
+     justify-content: space-around;
+ }
+
+
+.issue-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
 }

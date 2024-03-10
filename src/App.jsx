@@ -66,7 +66,7 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
     return (
         <div className="app-container">
             <div className="login-section">
-                <h3 style={{ color: 'purple' ,fontSize:70}} className="typewriter-text">{typewriterText}</h3>
+                <h3 style={{ color: 'purple' ,fontSize:50, }} className="typewriter-text">{typewriterText}</h3>
 
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />

@@ -37,10 +37,10 @@ function IssuesPage({ data, database }) {
 
 
     return (
-        <div>
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
             {data && Object.entries(data).map(([id, issue]) => (
-                <div key={id} style={{ display: 'flex', alignItems: 'top', marginBottom: '10px' }}>
-                    <div style={{ marginRight: '10px' }}>
+                <div key={id} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '10px', width: '70%' }}>
+                    <div style={{ marginBottom: '10px' }}>
                         <p>ID: {id}</p>
                         <p>Title: {issue.title}</p>
                         <p>Description: {issue.description}</p>
@@ -52,9 +52,6 @@ function IssuesPage({ data, database }) {
                             <option value="In-Progress">In-Progress</option>
                             <option value="Resolved">Resolved</option>
                         </select></p>
-                    </div>
-                    <div style={{ position: 'relative' }}>
-
                     </div>
                 </div>
             ))}
