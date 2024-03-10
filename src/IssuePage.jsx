@@ -4,19 +4,23 @@ import { ref, set } from 'firebase/database'; // Import ref and set from Firebas
 function IssuesPage({ data, database }) {
     const [status, setStatus] = useState({});
     const [department, setDepartment] = useState({});
+    const [selectedOption, setSelectedOption] = useState({});
 
     useEffect(() => {
         if (data) {
             const newStatus = {};
             const newDepartment = {};
+            const newSelectedOption = {};
             for (const id in data) {
                 if (data.hasOwnProperty(id)) {
                     newStatus[id] = data[id].status;
                     newDepartment[id] = data[id].department;
+                    newSelectedOption[id] = data[id].selectedOption;
                 }
             }
             setStatus(newStatus);
             setDepartment(newDepartment);
+            setSelectedOption(newSelectedOption);
         }
     }, [data]);
 
@@ -58,6 +62,25 @@ function IssuesPage({ data, database }) {
         }
     };
 
+    const handleChangeSelectedOption = async (id, event) => {
+        const newSelectedOption = event.target.value;
+        setSelectedOption(prevSelectedOption => ({
+            ...prevSelectedOption,
+            [id]: newSelectedOption
+        }));
+
+        try {
+            if (database && data && data[id]) {
+                await set(ref(database, `issues/${id}/selectedOption`), newSelectedOption);
+                console.log('Selected option updated successfully');
+            } else {
+                console.error('Database or issue not found');
+            }
+        } catch (error) {
+            console.error('Error updating selected option:', error);
+        }
+    };
+
     return (
         <div style={{ display: 'flex', justifyContent: 'center' }}>
             {data && Object.entries(data).map(([id, issue]) => (
@@ -68,7 +91,7 @@ function IssuesPage({ data, database }) {
                         <p>Description: {issue.description}</p>
                         <p>Timp : {issue.requestTime}</p>
                         <p>User: {issue.email}</p>
-                        <img src={issue.image} alt="Nu a pus poza" style={{ width: '100px', height: '100px' }}  />
+                        <img src={issue.image} alt="Nu a pus poza" style={{ width: '100px', height: '100px' }} />
                         <p>Status: <select
                             value={status[id] || issue.status}
                             onChange={(event) => handleChangeStatus(id, event)}
@@ -78,7 +101,7 @@ function IssuesPage({ data, database }) {
                             <option value="Resolved">Resolved</option>
                         </select></p>
                         <p>Department: <select
-                            value={department[id] || issue.selectedOption}
+                            value={department[id] || issue.department}
                             onChange={(event) => handleChangeDepartment(id, event)}
                         >
                             <option value="Unallocated">Unallocated</option>
@@ -86,6 +109,17 @@ function IssuesPage({ data, database }) {
                             <option value="Mediu">Mediu</option>
                             <option value="Ministerul afacerilor interne">MAI</option>
                             {/* Add more departments as needed */}
+                        </select></p>
+                        <p>Selected Option: <select
+                            value={selectedOption[id] || issue.selectedOption}
+                            onChange={(event) => handleChangeSelectedOption(id, event)}
+                        >
+                            <option value="Infrastructura">Infrastructura</option>
+                            <option value="Mediu">Mediu</option>
+                            <option value="Siguranta publica">Siguranta publica</option>
+                            <option value="Servicii publice">Servicii publice</option>
+                            <option value="Tehnologie si comunicatii">Tehnologie si comunicatii</option>
+                            {/* Add more options as needed */}
                         </select></p>
                     </div>
                 </div>
