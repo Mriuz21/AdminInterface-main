@@ -69,6 +69,34 @@
   }
 }
 
+/* App.css */
+.app-container {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  margin: 0 auto; /* Center the container */
+}
+
+.login-section {
+  flex: 1; /* Take up half of the container */
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.map-section {
+  flex: 1; /* Take up half of the container */
+  padding: 20px;
+}
+
+
+
+
+.leaflet-container {
+  height: 450px;
+  width: 100%;
+}
 
 
 .data-container h2 {

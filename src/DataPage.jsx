@@ -1,10 +1,28 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import {json, useNavigate} from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import { getDatabase, ref, get } from "firebase/database";
+function ReturnamDiv(roletemp, navigate) {
+        return (<div>
+            <h2>Hai sa vedem</h2>
+            {roletemp === 'admin' && (
+                <button onClick={() => {
+                    navigate('/issues');
+                }}>See Issues</button>
+            )}
+            <button onClick={() => navigate('/report')}>Report Issue</button>
 
-function DataPage({ data, logout }) {
+
+        </div>)
+        }
+
+function DataPage({ data, logout, showMarkers = true }) {
     const navigate = useNavigate();
-    const [position, setPosition] = useState(null); // Set initial position to null
+    const [position, setPosition] = useState(null);
+    const [user, setUser] = useState(null);
+    const [loading, setLoading] = useState(true); // State to manage loading
+    const [role, setRole] = useState("user")
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((position) => {
@@ -12,14 +30,36 @@ function DataPage({ data, logout }) {
         });
     }, []);
 
+    useEffect(() => {
+        const auth = getAuth();
+        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+            if (currentUser) {
+                setUser(currentUser);
+                console.log("Alex User: " + user);
+                // Fetch role from Realtime Database
+                const encodedEmail = currentUser.email.replace(/\./g, ',');
+                const snapshot = await get(ref(getDatabase(), `user/${encodedEmail}/role`));
+                const roletemp = snapshot.val();
+                console.log(`Alex User role: ${role}`);
+                setRole(roletemp);
+                console.log("probabil bine role temp: " + roletemp);
+                console.log("probabil bine role global" + role);
+                // Assuming the role is fetched successfully, you can now use it as needed
+                // For demonstration, we'll just log it
+                setLoading(false); // Set loading to false after fetching the role
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
+
     const handleLogout = async () => {
         await logout();
         navigate('/');
     };
 
-    // If position is still null, don't render the map yet
-    if (!position) {
-        return <div>Loading...</div>;
+    if (loading) {
+        return <div>Loading...</div>; // Show a loading message while fetching the role
     }
 
     return (
@@ -30,7 +70,7 @@ function DataPage({ data, logout }) {
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='© <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
-                    {data && Object.entries(data).map(([id, issue]) => (
+                    {showMarkers && data && Object.entries(data).map(([id, issue]) => (
                         <Marker key={id} position={[issue.location.latitude, issue.location.longitude]}>
                             <Popup>
                                 {issue.description}
@@ -39,10 +79,19 @@ function DataPage({ data, logout }) {
                     ))}
                 </MapContainer>
             </div>
-            <div className="button-section">
-                <button onClick={() => navigate('/issues')}>See Issues</button>
+            {/*<div className="button-section">
+                <h2>Hai sa vedem</h2>
+                <h2>{JSON.stringify(role)}</h2>
+                {user && JSON.stringify(role) === 'admin' && (
+                    <button onClick={() => {
+                        navigate('/issues');
+                    }}>See Issues</button>
+                )}
                 <button onClick={() => navigate('/report')}>Report Issue</button>
                 <button onClick={handleLogout}>Logout</button>
+            </div>*/}<div className="button-section">
+            {ReturnamDiv(role, navigate)}
+            <button className="button-section" onClick={handleLogout}>Logout</button>
             </div>
         </div>
     );
