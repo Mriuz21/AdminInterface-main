@@ -11,6 +11,7 @@ import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 import { useTypewriter } from 'react-simple-typewriter'; // Import useTypewriter
 
+
 function LoginPage({ setIsLoggedIn, fetchData }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -163,14 +164,14 @@ function App() {
             console.error('Error signing out:', error);
         }
     };
-
+    const database = getDatabase();
     return (
         <Router>
             <Routes>
                 <Route path="/" element={<FirstPageWrapper setIsLoggedIn={setIsLoggedIn} fetchData={fetchData} />} />
                 <Route path="/register" element={<RegisterPage />} />
                 <Route path="/data" element={isLoggedIn ? <DataPage data={data} logout={logout} /> : <NotLoggedInPage />} />
-                <Route path="/issues" element={isLoggedIn ? <IssuesPage data={data} logout={logout} /> : <NotLoggedInPage />} />
+                <Route path="/issues" element={isLoggedIn ? <IssuesPage data={data} database={database} logout={logout} /> : <NotLoggedInPage />} />
             </Routes>
         </Router>
     );
