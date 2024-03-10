@@ -1,16 +1,14 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import db from './firebaseConfig.jsx';
-import {ref, get, getDatabase} from 'firebase/database';
+import { ref, get, getDatabase } from 'firebase/database';
 import { getAuth, signInWithEmailAndPassword, signOut, createUserWithEmailAndPassword } from "firebase/auth";
 import DataPage from './DataPage.jsx';
 import IssuesPage from "./IssuePage.jsx";
 import HomePage from "./HomePage.jsx";
 import 'leaflet/dist/leaflet.css';
-import {MapContainer, Marker, Popup, TileLayer} from 'react-leaflet';
-
-
+import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
 
 function LoginPage({ setIsLoggedIn, fetchData }) {
     const [email, setEmail] = useState("");
@@ -19,7 +17,7 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
     const [userLocation, setUserLocation] = useState(null); // Initialize with null
     const [data, setData] = useState(null);
     const [userRole, setUserRole] = useState(null);
-    // Get user's location using geolocation API
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
             (position) => {
@@ -32,57 +30,46 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
         );
     }, []);
 
-
     const login = async () => {
         const auth = getAuth();
         try {
             const userCredential = await signInWithEmailAndPassword(auth, email, password);
-            // Signed in
             const user = userCredential.user;
-
-            // Fetch role from Realtime Database
             const encodedEmail = user.email.replace(/\./g, ',')
             const snapshot = await get(ref(getDatabase(), `user/${encodedEmail}/role`));
             const role = snapshot.val();
             setUserRole(role);
-
-            // Log the user role
-            console.log(`User role: ${userRole}`);
             console.log(`User role: ${role}`);
-
-            // Fetch data after successful login
             fetchData();
             setIsLoggedIn(true);
             navigate("/data");
         } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-            console.log(`Error code: ${errorCode}`);
-            console.log(`Error message: ${errorMessage}`);
+            console.log(`Error code: ${error.code}`);
+            console.log(`Error message: ${error.message}`);
         }
     };
 
-    // If userLocation is still null, don't render the map yet
     if (!userLocation) {
         return <div>Loading...</div>;
     }
 
     return (
-        <div>
-            <h3>ConnecTM</h3>
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
-            <button onClick={login}>Login</button>
-            <button onClick={() => navigate("/register")}>Register</button>
-
-            {/* Display the map centered at the user's location */}
-            <MapContainer center={userLocation} zoom={13} style={{ height: "400px", width: "100%" }}>
-                <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                />
-
-            </MapContainer>
+        <div className="app-container">
+            <div className="login-section">
+                <h3>ConnecTM</h3>
+                <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
+                <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
+                <button onClick={login}>Login</button>
+                <button onClick={() => navigate("/register")}>Register</button>
+            </div>
+            <div className="map-section">
+                <MapContainer center={userLocation} zoom={13} style={{ height: "100%", width: "100%" }}>
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                </MapContainer>
+            </div>
         </div>
     );
 }
@@ -110,9 +97,8 @@ function RegisterPage() {
             const user = userCredential.user;
             navigate('/'); // Navigate to home page after successful registration
         } catch (error) {
-            const errorCode = error.code;
-            const errorMessage = error.message;
-
+            console.log(`Error code: ${error.code}`);
+            console.log(`Error message: ${error.message}`);
         }
     };
 
@@ -125,6 +111,7 @@ function RegisterPage() {
         </div>
     );
 }
+
 function FirstPageWrapper({ setIsLoggedIn, fetchData }) {
     return (
         <div>
@@ -133,7 +120,6 @@ function FirstPageWrapper({ setIsLoggedIn, fetchData }) {
         </div>
     );
 }
-
 
 function App() {
     const [data, setData] = useState(null);
@@ -167,7 +153,6 @@ function App() {
             console.error('Error signing out:', error);
         }
     };
-
 
     return (
         <Router>
