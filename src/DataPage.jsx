@@ -2,21 +2,20 @@ import React, { useEffect, useState } from 'react';
 import {json, useNavigate} from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
-import './DataPage.css'
 import { getDatabase, ref, get } from "firebase/database";
 function ReturnamDiv(roletemp, navigate) {
-        return (<div>
-            <h2 style={{color:'black', fontSize:40}}>Panel</h2>
-            {roletemp === 'admin' && (
-                <button onClick={() => {
-                    navigate('/issues');
-                }}>See Issues</button>
-            )}
-            <button onClick={() => navigate('/report')}>Semnaleaza Problema</button>
+    return (<div>
+        <h2>Hai sa vedem</h2>
+        {roletemp === 'admin' && (
+            <button onClick={() => {
+                navigate('/issues');
+            }}>See Issues</button>
+        )}
+        <button onClick={() => navigate('/report')}>Report Issue</button>
 
 
-        </div>)
-        }
+    </div>)
+}
 
 function DataPage({ data, logout, showMarkers = true }) {
     const navigate = useNavigate();
@@ -62,6 +61,13 @@ function DataPage({ data, logout, showMarkers = true }) {
     if (loading) {
         return <div>Loading...</div>; // Show a loading message while fetching the role
     }
+    function ImageDisplay({ imageUrl }) {
+        return (
+            <div>
+                <img src={imageUrl} alt="Displayed Image" />
+            </div>
+        );
+    }
 
     return (
         <div className="data-container">
@@ -74,7 +80,18 @@ function DataPage({ data, logout, showMarkers = true }) {
                     {showMarkers && data && Object.entries(data).map(([id, issue]) => (
                         <Marker key={id} position={[issue.location.latitude, issue.location.longitude]}>
                             <Popup>
-                                {issue.description}
+                                {"Titlu: " + issue.title + "\n"}
+                                <br/>
+                                {"Descriere : "+issue.description + "\n"}
+                                <br/>
+                                {"Status :" + issue.status+"\n"}
+                                <br/>
+                                {<img src={issue.image} alt="Photo unavailable" style={{ width: '100px', height: '100px' }} />}
+                                <br/>
+                                {"Departament: " + issue.department + "\n"}
+                                <br/>
+                                {"Data sesizare: " + issue.requestTime + "\n"}
+                                <br/>
                             </Popup>
                         </Marker>
                     ))}
@@ -93,7 +110,7 @@ function DataPage({ data, logout, showMarkers = true }) {
             </div>*/}<div className="button-section">
             {ReturnamDiv(role, navigate)}
             <button className="button-section" onClick={handleLogout}>Logout</button>
-            </div>
+        </div>
         </div>
     );
 }
