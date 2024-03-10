@@ -66,6 +66,9 @@ function IssuesPage({ data, database }) {
                         <p>ID: {id}</p>
                         <p>Title: {issue.title}</p>
                         <p>Description: {issue.description}</p>
+                        <p>Timp : {issue.requestTime}</p>
+                        <p>User: {issue.email}</p>
+                        <img src={issue.image} alt="Nu a pus poza" style={{ width: '100px', height: '100px' }}  />
                         <p>Status: <select
                             value={status[id] || issue.status}
                             onChange={(event) => handleChangeStatus(id, event)}
