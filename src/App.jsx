@@ -9,6 +9,7 @@ import IssuesPage from "./IssuePage.jsx";
 import HomePage from "./HomePage.jsx";
 import 'leaflet/dist/leaflet.css';
 import { MapContainer, Marker, Popup, TileLayer } from 'react-leaflet';
+import { useTypewriter } from 'react-simple-typewriter'; // Import useTypewriter
 
 function LoginPage({ setIsLoggedIn, fetchData }) {
     const [email, setEmail] = useState("");
@@ -17,6 +18,14 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
     const [userLocation, setUserLocation] = useState(null); // Initialize with null
     const [data, setData] = useState(null);
     const [userRole, setUserRole] = useState(null);
+
+    // Use useTypewriter hook for typewriter effect
+    const [typewriterText] = useTypewriter({
+        words: ["Connect-TM"],
+        loop: false,
+        typeSpeed: 120,
+        deleteSpeed: 80,
+    });
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(
@@ -56,14 +65,15 @@ function LoginPage({ setIsLoggedIn, fetchData }) {
     return (
         <div className="app-container">
             <div className="login-section">
-                <h3>ConnecTM</h3>
+                <h3 style={{ color: 'purple' ,fontSize:70}} className="typewriter-text">{typewriterText}</h3>
+
                 <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email" />
                 <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
                 <button onClick={login}>Login</button>
                 <button onClick={() => navigate("/register")}>Register</button>
             </div>
             <div className="map-section">
-                <MapContainer center={userLocation} zoom={13} style={{ height: "100%", width: "100%" }}>
+                <MapContainer center={userLocation} zoom={13} style={{ height: "100%", width: "100%"}}>
                     <TileLayer
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

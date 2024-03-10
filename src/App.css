@@ -1,114 +1,128 @@
 @import url('https://unpkg.com/leaflet/dist/leaflet.css');
 
 #root {
-  /*max-width: 1280px;
-  margin: 0 auto;*/
-  text-align: center;
+ text-align: center;
 }
 
 .logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
+ height: 6em;
+ padding: 1.5em;
+ will-change: filter;
+ transition: filter 300ms;
 }
 .logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
+ filter: drop-shadow(0 0 2em #646cffaa);
 }
 .logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+ filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
 @keyframes logo-spin {
-  from {
+ from {
     transform: rotate(0deg);
-  }
-  to {
+ }
+ to {
     transform: rotate(360deg);
-  }
+ }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
+ a:nth-of-type(2) .logo {
     animation: logo-spin infinite 20s linear;
-  }
+ }
 }
 
 .card {
-  padding: 2em;
+ padding: 2em;
 }
 
 .read-the-docs {
-  color: #888;
+ color: #888;
 }
 
 .data-container {
-  display: flex;
-  height: 100vh;
-  /*margin-top: 2rem;*/
-  /*padding: 1rem;*/
-  background-color: #000000;
-  /*border-radius: 8px;*/
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+ display: flex;
+ height: 100vh;
+ background-color: #000000;
+ box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .data-section, .map-section {
-  flex: 1; /* Make each section take up equal space within the flex container */
-  height: 100%; /* This will make each section take up the full height of the .data-container */
-  overflow: auto;
+ flex: 1;
+ height: 100%;
+ overflow: auto;
 }
 
 @media (max-width: 768px) {
-  /* Adjust the breakpoint as needed */
-  .data-container {
-    flex-direction: column; /* Stack the sections vertically on smaller screens */
-  }
+ .data-container {
+    flex-direction: column;
+ }
 
-  .data-section, .map-section {
-    width: 100%; /* Make each section take up the full width on smaller screens */
-  }
+ .data-section, .map-section {
+    width: 100%;
+ }
 }
 
-/* App.css */
 .app-container {
-  display: flex;
-  height: 100vh; /* Full viewport height */
-  margin: 0 auto; /* Center the container */
+ display: flex;
+ height: 100vh;
+ margin: 0 auto;
 }
 
 .login-section {
-  flex: 1; /* Take up half of the container */
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: white;
-
+ flex: 1;
+ padding: 20px;
+ display: flex;
+ flex-direction: column;
+ justify-content: center;
+ align-items: center;
+ background: white;
+ gap: 20px; 
 }
 
-.map-section {
-  flex: 1; /* Take up half of the container */
-
+.login-section input[type="email"],
+.login-section input[type="password"] {
+ padding: 15px;
+ font-size: 18px;
+ border-radius: 5px;
+ border: 1px solid #ccc;
+    background: white;
+    border-color: purple;
+    border-width: 2px;
+ color: purple;
 }
 
+.login-section button {
+ padding: 10px 20px; /* Increased padding */
+ font-size: 16px; /* Increased font size */
+ border-radius: 5px; /* Added rounded corners */
+ background-color: purple; /* Added a background color */
+ color: white; /* Changed text color */
+ border: none; /* Removed default border */
+ cursor: pointer; /* Changed cursor on hover */
+ transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
 
-
+.login-section button:hover {
+ background-color: #0056b3; /* Darkened background on hover */
+}
 
 .leaflet-container {
-  height: 450px;
-  width: 100%;
+ height: 450px;
+ width: 100%;
 }
 
-
 .data-container h2 {
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+ font-size: 1.5rem;
+ margin-bottom: 1rem;
 }
 
 .data-container pre {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 1rem;
-  white-space: pre-wrap;
+ font-family: 'Courier New', Courier, monospace;
+ font-size: 1rem;
+ white-space: pre-wrap;
 }
 
+
+
+ 

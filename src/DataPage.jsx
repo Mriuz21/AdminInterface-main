@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react';
 import {json, useNavigate} from 'react-router-dom';
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 import { getAuth, onAuthStateChanged } from "firebase/auth";
+import './DataPage.css'
 import { getDatabase, ref, get } from "firebase/database";
 function ReturnamDiv(roletemp, navigate) {
         return (<div>
-            <h2>Hai sa vedem</h2>
+            <h2 style={{color:'black', fontSize:40}}>Panel</h2>
             {roletemp === 'admin' && (
                 <button onClick={() => {
                     navigate('/issues');
                 }}>See Issues</button>
             )}
-            <button onClick={() => navigate('/report')}>Report Issue</button>
+            <button onClick={() => navigate('/report')}>Semnaleaza Problema</button>
 
 
         </div>)

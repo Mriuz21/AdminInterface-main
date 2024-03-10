@@ -1,0 +1,41 @@
+/* DataPage.css */
+
+.data-container {
+    display: flex;
+    height: 100vh;
+    margin: 0 auto;
+}
+
+.map-section {
+    flex: 2; /* Map occupies more space */
+    height: 100%;
+    overflow: hidden;
+}
+
+.button-section {
+    padding: 40px 80px 80px 80px; /* Adjusted padding: top, right, bottom, left */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between buttons */
+    background: white;
+}
+
+
+.button-section button {
+    background-color: purple; /* Button background color */
+    color: white; /* Button text color */
+    border: none;
+    padding: 5px 10px; /* Reduced padding */
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    line-height: 1.5; /* Adjusted line-height */
+}
+
+
+.button-section button:hover {
+    background-color: #800080; /* Darker purple on hover */
+}
